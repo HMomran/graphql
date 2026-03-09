@@ -105,16 +105,21 @@ export function drawXPGraph(transactions) {
 
   // Draw points and labels for key data points
   const showEvery = Math.max(1, Math.floor(transactions.length / 8))
+  const labeledX = [] // track x positions where a label was drawn
+  const minLabelGap = 60
   pointsArray.forEach((point, i) => {
     if (i % showEvery === 0 || i === pointsArray.length - 1 || i === 0) {
       // Data point circle
       const isStartOrEnd = i === 0 || i === pointsArray.length - 1
       const circleSize = isStartOrEnd ? 7 : 5
       svg += `<circle cx="${point.x}" cy="${point.y}" r="${circleSize}" fill="#00f2fe" stroke="white" stroke-width="2" filter="drop-shadow(0 0 6px rgba(0, 242, 254, 0.8))"/>`
-      
-      // Value label on start, end, and max points
-      if (i === pointsArray.length - 1 || i === 0 || point.amount === maxXP) {
+
+      // Value label on start, end, and max points — skip if too close to an existing label
+      const wantsLabel = i === pointsArray.length - 1 || i === 0 || point.amount === maxXP
+      const tooClose = labeledX.some(lx => Math.abs(lx - point.x) < minLabelGap)
+      if (wantsLabel && !tooClose) {
         svg += `<text x="${point.x}" y="${point.y - 15}" text-anchor="middle" fill="#00f2fe" font-size="12" font-weight="700">${(point.amount / 1000).toFixed(1)}k</text>`
+        labeledX.push(point.x)
       }
     }
   })

@@ -53,7 +53,7 @@ function selectModule(eventId) {
 // Load all profile data for selected module
 async function loadProfileData() {
   await loadXP(selectedEventId)
-  await loadAuditRatio(selectedEventId)
+  await loadAuditRatio()
   await loadBestSkills()
   await loadLastActivity(selectedEventId)
 }

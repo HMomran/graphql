@@ -15,15 +15,10 @@ export async function fetchUser() {
   return data.user[0]
 }
 
-export async function fetchAuditData(selectedEventId) {
-  const whereClause = selectedEventId 
-    ? `where: {type: {_in: ["up","down"]}, eventId: {_eq: ${selectedEventId}}}`
-    : `where: {type: {_in: ["up","down"]}}`
-
+export async function fetchAuditData() {
   const query = `
   {
-    transaction(${whereClause}) {
-      path
+    transaction(where: {type: {_in: ["up", "down"]}}) {
       type
       amount
     }
@@ -111,3 +106,4 @@ export async function fetchAllProjects(selectedEventId) {
 
   return await graphqlRequest(query)
 }
+
