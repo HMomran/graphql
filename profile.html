@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Student Profile</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+  <h1>GraphQL - Profile</h1>
+  <div class="header-actions">
+    <button id="viewProfileBtn" class="view-profile-btn">👤 View Profile</button>
+    <button id="logout">Logout</button>
+  </div>
+</header>
+
+<div class="page-wrapper">
+
+<section class="module-selector">
+  <h2>Select Module</h2>
+  <div id="moduleButtons"></div>
+</section>
+
+<section class="profile" id="profileSection" style="display:none">
+
+  <div class="card">
+    <h2>Last activity</h2>
+    <div id="lastActivity"></div>
+    <button id="seeHistory" class="see-history-btn">SEE HISTORY →</button>
+  </div>
+
+</section>
+
+<section class="stats" id="statsSection" style="display:none">
+
+  <div class="card">
+    <h2>Audit ratio</h2>
+    <div id="auditRatioGraph"></div>
+  </div>
+
+  <div class="card best-skills-card">
+    <div class="card-header">
+      <h2>🏆 Best Skills</h2>
+      <p class="subtitle">Your highest completion rates across all skill categories.</p>
+    </div>
+    <div id="bestSkillsGraph"></div>
+  </div>
+
+  <div class="card">
+    <h2>XP Progress</h2>
+    <div id="xpGraph"></div>
+  </div>
+
+</section>
+
+</div><!-- .page-wrapper -->
+
+<!-- Profile Modal -->
+<div id="profileModal" class="modal" onclick="if(event.target===this)this.style.display='none'">
+  <div class="modal-content profile-modal-content">
+    <div class="modal-header">
+      <h2>👤 User Profile</h2>
+      <button class="close-btn" onclick="document.getElementById('profileModal').style.display='none'">&times;</button>
+    </div>
+    <div id="profileInfo" class="modal-body"></div>
+  </div>
+</div>
+
+<!-- Project History Modal -->
+<div id="historyModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Project History</h2>
+      <button class="close-btn" onclick="document.getElementById('historyModal').style.display='none'">&times;</button>
+    </div>
+    <div id="historyList" class="modal-body"></div>
+  </div>
+</div>
+
+<script type="module" src="js/profile-new.js"></script>
+
+</body>
+</html>
