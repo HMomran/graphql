@@ -10,13 +10,24 @@ export async function graphqlRequest(query) {
         "Content-Type": "application/json",
         "Authorization": "Bearer " + token
       },
-      body: JSON.stringify({
-        query: query
-      })
+      body: JSON.stringify({ query })
     }
   )
 
-  const data = await response.json()
+  if (!response.ok) {
+    if (response.status === 401) {
+      localStorage.removeItem("token")
+      window.location.href = "index.html"
+      throw new Error("Session expired. Please log in again.")
+    }
+    throw new Error(`Request failed: ${response.status}`)
+  }
 
-  return data.data
+  const json = await response.json()
+
+  if (json.errors) {
+    throw new Error(json.errors[0].message)
+  }
+
+  return json.data
 }

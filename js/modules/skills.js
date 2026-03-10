@@ -7,12 +7,13 @@ export async function loadBestSkills() {
 
   const skillsData = {}
   
+  // Skill transactions store the current skill level (0–100), not a delta.
+  // Keep only the highest recorded amount per skill.
   data.transaction.forEach(t => {
     const skillName = t.type.replace("skill_", "")
-    if (!skillsData[skillName]) {
-      skillsData[skillName] = 0
+    if (!skillsData[skillName] || t.amount > skillsData[skillName]) {
+      skillsData[skillName] = t.amount
     }
-    skillsData[skillName] += t.amount
   })
 
   // Get top 6 skills

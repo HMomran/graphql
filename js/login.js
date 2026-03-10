@@ -3,10 +3,12 @@ const form = document.getElementById("loginForm")
 form.addEventListener("submit", async (e) => {
   e.preventDefault()
 
-  const identifier = document.getElementById("identifier").value
+  const identifier = document.getElementById("identifier").value.trim()
   const password = document.getElementById("password").value
+  const errorEl = document.getElementById("error")
+  errorEl.textContent = ""
 
-  const credentials = btoa(identifier + ":" + password)
+  const credentials = btoa(`${identifier}:${password}`)
 
   try {
 
@@ -18,7 +20,10 @@ form.addEventListener("submit", async (e) => {
     })
 
     if (!response.ok) {
-      throw new Error("Invalid credentials")
+      if (response.status === 401) {
+        throw new Error("Invalid credentials. Please check your username/email and password.")
+      }
+      throw new Error(`Login failed (${response.status}). Please try again.`)
     }
 
     const token = await response.json()
@@ -28,7 +33,9 @@ form.addEventListener("submit", async (e) => {
     window.location.href = "profile.html"
 
   } catch (error) {
-    document.getElementById("error").textContent = "Login failed"
+    errorEl.textContent = error.message.includes("Failed to fetch")
+      ? "Network error. Please check your connection."
+      : error.message
   }
 
 })

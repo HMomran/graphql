@@ -16,7 +16,7 @@ export async function loadAuditRatio() {
   })
 
   let ratio = auditsReceived
-    ? Number((auditsDone / auditsReceived).toFixed(2))
+    ? Number((auditsDone / auditsReceived).toFixed(1))
     : 0
 
   drawAuditRatioGraph(auditsDone, auditsReceived, ratio)

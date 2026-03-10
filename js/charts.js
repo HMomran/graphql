@@ -290,53 +290,60 @@ export function drawRadarChart(data, elementId, color = "#4facfe") {
 }
 
 export function drawAuditRatioGraph(done, received, ratio) {
-  const maxWidth = 400
-  const doneWidth = received > 0 ? (done / received) * maxWidth : 0
-  const receivedWidth = maxWidth
+  const width = 400
+  const height = 210
+  const barHeight = 30
+  const startX = 64
+  const maxBarWidth = 280
 
   const doneMB = (done / 1000000).toFixed(2)
   const receivedMB = (received / 1000000).toFixed(2)
+  const doneBarWidth = received > 0 ? Math.min((done / received) * maxBarWidth, maxBarWidth) : 0
 
-  let message = "Perfect!"
-  let messageColor = "#22c55e"
-  
-  if (ratio < 0.5) {
-    message = "Careful buddy!"
-    messageColor = "#ef4444"
-  } else if (ratio < 0.8) {
-    message = "Keep going!"
-    messageColor = "#f59e0b"
-  } else if (ratio < 1) {
-    message = "Almost there!"
-    messageColor = "#3b82f6"
-  }
+  let color, message
+  if (ratio >= 1)        { color = "#22c55e"; message = "PERFECT!" }
+  else if (ratio >= 0.8) { color = "#3b82f6"; message = "ALMOST THERE!" }
+  else if (ratio >= 0.5) { color = "#f59e0b"; message = "KEEP GOING!" }
+  else                   { color = "#ef4444"; message = "CAREFUL BUDDY!" }
 
-  const html = `
-    <div class="audit-viz">
-      <div class="audit-section">
-        <div class="audit-label">Done</div>
-        <div class="audit-bar-container">
-          <div class="audit-bar done-bar" style="width: ${(doneWidth / maxWidth) * 100}%"></div>
-        </div>
-        <div class="audit-value">${doneMB} MB</div>
-      </div>
-      
-      <div class="audit-section">
-        <div class="audit-label">Received</div>
-        <div class="audit-bar-container">
-          <div class="audit-bar received-bar" style="width: 100%"></div>
-        </div>
-        <div class="audit-value">${receivedMB} MB</div>
-      </div>
+  const svg = `
+    <svg viewBox="0 0 ${width} ${height}" style="width:100%;height:auto;display:block;">
+      <defs>
+        <linearGradient id="doneGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#238636"/>
+          <stop offset="100%" style="stop-color:#2ea043"/>
+        </linearGradient>
+        <linearGradient id="recvGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#1f6feb"/>
+          <stop offset="100%" style="stop-color:#388bfd"/>
+        </linearGradient>
+        <filter id="barGlow">
+          <feGaussianBlur stdDeviation="3" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
 
-      <div class="audit-ratio-display">
-        <div class="ratio-number" style="color: ${messageColor}">${ratio}</div>
-        <div class="ratio-message" style="color: ${messageColor}">${message}</div>
-      </div>
-    </div>
+      <!-- Done bar -->
+      <text x="${startX}" y="22" fill="#8b949e" font-size="11" font-weight="700" letter-spacing="1">DONE</text>
+      <rect x="${startX}" y="28" width="${maxBarWidth}" height="${barHeight}" rx="6" fill="rgba(46,160,67,0.12)"/>
+      <rect x="${startX}" y="28" width="${doneBarWidth}" height="${barHeight}" rx="6" fill="url(#doneGrad)" filter="url(#barGlow)"/>
+      <text x="${startX + maxBarWidth + 10}" y="${28 + barHeight / 2 + 5}" fill="#c9d1d9" font-size="13" font-weight="700">${doneMB} MB</text>
+
+      <!-- Received bar -->
+      <text x="${startX}" y="88" fill="#8b949e" font-size="11" font-weight="700" letter-spacing="1">RECEIVED</text>
+      <rect x="${startX}" y="94" width="${maxBarWidth}" height="${barHeight}" rx="6" fill="rgba(56,139,253,0.12)"/>
+      <rect x="${startX}" y="94" width="${maxBarWidth}" height="${barHeight}" rx="6" fill="url(#recvGrad)" filter="url(#barGlow)"/>
+      <text x="${startX + maxBarWidth + 10}" y="${94 + barHeight / 2 + 5}" fill="#c9d1d9" font-size="13" font-weight="700">${receivedMB} MB</text>
+
+      <!-- Ratio -->
+      <text x="${width / 2}" y="165" text-anchor="middle" fill="${color}" font-size="42" font-weight="800"
+            filter="drop-shadow(0 0 12px ${color})">${ratio}</text>
+      <text x="${width / 2}" y="193" text-anchor="middle" fill="${color}" font-size="13" font-weight="700"
+            letter-spacing="2">${message}</text>
+    </svg>
   `
 
-  document.getElementById("auditRatioGraph").innerHTML = html
+  document.getElementById("auditRatioGraph").innerHTML = svg
 }
 
 export function drawSkillDetails(skillsData, elementId) {

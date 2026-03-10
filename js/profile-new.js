@@ -52,10 +52,12 @@ function selectModule(eventId) {
 
 // Load all profile data for selected module
 async function loadProfileData() {
-  await loadXP(selectedEventId)
-  await loadAuditRatio()
-  await loadBestSkills()
-  await loadLastActivity(selectedEventId)
+  await Promise.all([
+    loadXP(selectedEventId),
+    loadAuditRatio(),
+    loadBestSkills(),
+    loadLastActivity(selectedEventId)
+  ])
 }
 
 // Start the application
