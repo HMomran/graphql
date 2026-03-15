@@ -1,10 +1,10 @@
-// User Module
+
 import { fetchUser } from '../api.js'
 
 export async function loadUser() {
   const user = await fetchUser()
 
-  // Populate the profile modal
+  
   document.getElementById("profileInfo").innerHTML = `
     <div class="profile-info-list">
       <div class="profile-info-row">

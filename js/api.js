@@ -1,4 +1,4 @@
-// API Data Fetchers
+
 import { graphqlRequest } from './graphql.js'
 
 export async function fetchUser() {

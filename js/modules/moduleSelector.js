@@ -1,10 +1,10 @@
-// Module Selector
+
 import { fetchModulesData } from '../api.js'
 
 export async function loadModules(onSelectModule) {
   const data = await fetchModulesData()
 
-  // Build eventMap: eventId -> { xp, name, newestCreatedAt }
+  
   const eventMap = new Map()
 
   data.transaction.forEach(tx => {
@@ -17,14 +17,14 @@ export async function loadModules(onSelectModule) {
     if (tx.createdAt > entry.newestCreatedAt) entry.newestCreatedAt = tx.createdAt
   })
 
-  // Group eventIds by name to find newest per name group
-  const nameGroups = new Map() // name -> [{ eventId, newestCreatedAt }]
+  
+  const nameGroups = new Map() 
   eventMap.forEach(({ name, newestCreatedAt }, eventId) => {
     if (!nameGroups.has(name)) nameGroups.set(name, [])
     nameGroups.get(name).push({ eventId, newestCreatedAt })
   })
 
-  // For each group: single = muted green (no retake), multiple = newest pass + older fail
+  
   const statusMap = new Map()
   nameGroups.forEach(entries => {
     if (entries.length === 1) {
@@ -35,7 +35,7 @@ export async function loadModules(onSelectModule) {
     }
   })
 
-  // Display module buttons
+  
   const moduleButtons = document.getElementById("moduleButtons")
   let html = ""
 
@@ -59,7 +59,7 @@ export async function loadModules(onSelectModule) {
 
   moduleButtons.innerHTML = html
 
-  // Add click listeners to all module buttons
+  
   document.querySelectorAll('.module-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const eventId = parseInt(btn.getAttribute('data-event-id'))
@@ -69,7 +69,7 @@ export async function loadModules(onSelectModule) {
 }
 
 export function highlightSelectedModule(eventId) {
-  // Highlight selected button
+  
   document.querySelectorAll('.module-btn').forEach(btn => {
     btn.classList.remove('active')
   })

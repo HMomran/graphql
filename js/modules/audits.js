@@ -1,4 +1,4 @@
-// Audit Ratio Module
+
 import { fetchAuditData } from '../api.js'
 import { drawAuditRatioGraph } from '../charts.js'
 

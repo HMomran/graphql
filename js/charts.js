@@ -1,4 +1,4 @@
-// Chart Drawing Functions
+
 
 export function drawXPGraph(transactions) {
   const width = 810
@@ -10,7 +10,7 @@ export function drawXPGraph(transactions) {
   let points = ""
   let stepX = graphWidth / (transactions.length - 1)
 
-  // Build cumulative XP over time, sorted by date
+  
   const sorted = [...transactions].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
   let cumulative = 0
   const cumulativeData = sorted.map(t => {
@@ -22,7 +22,7 @@ export function drawXPGraph(transactions) {
   let maxXP = totalXP
   let minXP = 0
 
-  // Use today as the last point if not already
+  
   const today = new Date()
   const lastDate = cumulativeData[cumulativeData.length - 1].date
   let todayAdded = false
@@ -31,7 +31,7 @@ export function drawXPGraph(transactions) {
     todayAdded = true
   }
 
-  // Date-based X positioning
+  
   const startDate = cumulativeData[0].date
   const endDate = today
   const totalTimeMs = endDate - startDate
@@ -44,9 +44,9 @@ export function drawXPGraph(transactions) {
   const endDateStr = today.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
   const endLabel = 'Today'
 
-  // Calculate points by actual date position
+  
   let pointsArray = []
-  const yBottom = padding.top + graphHeight  // y coordinate for amount=0
+  const yBottom = padding.top + graphHeight  
   cumulativeData.forEach(d => {
     const timeOffset = d.date - startDate
     const x = padding.left + (timeOffset / totalTimeMs) * graphWidth
@@ -55,10 +55,10 @@ export function drawXPGraph(transactions) {
     pointsArray.push({ x, y, amount: d.amount, date: d.date })
   })
 
-  // Start SVG — viewBox makes it scale to any container width
+  
   let svg = `<svg viewBox="0 0 ${width} ${height + 40}" style="width: 100%; height: auto; display: block;">`
 
-  // Add gradient definition
+  
   svg += `
     <defs>
       <linearGradient id="xpGradient" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -73,24 +73,24 @@ export function drawXPGraph(transactions) {
     </defs>
   `
 
-  // Draw grid lines (Y-axis)
+  
   const yAxisSteps = 5
   for (let i = 0; i <= yAxisSteps; i++) {
     const y = padding.top + (graphHeight / yAxisSteps) * i
     const value = maxXP - ((maxXP - minXP) / yAxisSteps) * i
     
-    // Grid line
+    
     svg += `<line x1="${padding.left}" y1="${y}" x2="${width - padding.right}" y2="${y}" stroke="rgba(102, 126, 234, 0.2)" stroke-width="1" stroke-dasharray="5,5"/>`
     
-    // Y-axis label (cumulative total)
+    
     svg += `<text x="${padding.left - 10}" y="${y + 5}" text-anchor="end" fill="#a0a0b0" font-size="12" font-weight="600">${(value / 1000).toFixed(1)}k</text>`
   }
 
-  // Draw area under curve
+  
   let areaPoints = points + `${width - padding.right},${yBottom} ${padding.left},${yBottom}`
   svg += `<polygon points="${areaPoints}" fill="url(#xpGradient)" opacity="0.4"/>`
 
-  // Draw line
+  
   svg += `
     <polyline
       fill="none"
@@ -103,18 +103,18 @@ export function drawXPGraph(transactions) {
     />
   `
 
-  // Draw points and labels for key data points
+  
   const showEvery = Math.max(1, Math.floor(transactions.length / 8))
-  const labeledX = [] // track x positions where a label was drawn
+  const labeledX = [] 
   const minLabelGap = 60
   pointsArray.forEach((point, i) => {
     if (i % showEvery === 0 || i === pointsArray.length - 1 || i === 0) {
-      // Data point circle
+      
       const isStartOrEnd = i === 0 || i === pointsArray.length - 1
       const circleSize = isStartOrEnd ? 7 : 5
       svg += `<circle cx="${point.x}" cy="${point.y}" r="${circleSize}" fill="#00f2fe" stroke="white" stroke-width="2" filter="drop-shadow(0 0 6px rgba(0, 242, 254, 0.8))"/>`
 
-      // Value label on start, end, and max points — skip if too close to an existing label
+      
       const wantsLabel = i === pointsArray.length - 1 || i === 0 || point.amount === maxXP
       const tooClose = labeledX.some(lx => Math.abs(lx - point.x) < minLabelGap)
       if (wantsLabel && !tooClose) {
@@ -124,7 +124,7 @@ export function drawXPGraph(transactions) {
     }
   })
 
-  // Annotate the last real submitted project
+  
   const lastRealIdx = todayAdded ? pointsArray.length - 2 : pointsArray.length - 1
   const lastReal = pointsArray[lastRealIdx]
   if (lastReal && sorted.length > 0) {
@@ -138,27 +138,27 @@ export function drawXPGraph(transactions) {
     svg += `<text x="${boxX + boxW / 2}" y="${boxY + 37}" text-anchor="middle" fill="#a0a0b0" font-size="10">+${(lastProject.amount / 1000).toFixed(1)}k → ${(lastReal.amount / 1000).toFixed(1)}k total</text>`
   }
 
-  // Y-axis label
+  
   svg += `<text x="${padding.left - 60}" y="${height / 2}" text-anchor="middle" fill="#4facfe" font-size="13" font-weight="700" transform="rotate(-90, ${padding.left - 60}, ${height / 2})">XP Amount</text>`
   
-  // Add START date marker
+  
   const startX = padding.left
   const startY = height - padding.bottom + 25
   svg += `<text x="${startX}" y="${startY}" text-anchor="start" fill="#4facfe" font-size="13" font-weight="700">Start</text>`
   svg += `<text x="${startX}" y="${startY + 18}" text-anchor="start" fill="#a0a0b0" font-size="11">${startDateStr}</text>`
   
-  // Add END/TODAY date marker
+  
   const endX = width - padding.right
   svg += `<text x="${endX}" y="${startY}" text-anchor="end" fill="#43e97b" font-size="13" font-weight="700">${endLabel}</text>`
   svg += `<text x="${endX}" y="${startY + 18}" text-anchor="end" fill="#a0a0b0" font-size="11">${endDateStr}</text>`
 
-  // Duration label in the middle
+  
   const durationText = durationMonths > 0 ? `${durationMonths} ${durationMonths === 1 ? 'month' : 'months'}` : `${durationDays} days`
   svg += `<text x="${width / 2}" y="${height - 5}" text-anchor="middle" fill="#667eea" font-size="12" font-weight="600" opacity="0.8">Journey: ${durationText}</text>`
 
   svg += `</svg>`
 
-  // Add stats summary above graph with duration
+  
   const statsHTML = `
     <div class="xp-timeline-header">
       <div class="timeline-title">
@@ -202,13 +202,13 @@ export function drawRadarChart(data, elementId, color = "#4facfe") {
   const skills = Object.keys(data)
   const angleStep = (Math.PI * 2) / skills.length
 
-  // Find max value for scaling
+  
   const maxValue = Math.max(...Object.values(data))
 
-  // Generate radar chart
+  
   let svg = `<svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" style="width: 100%; height: auto;">`
 
-  // Add gradient definitions
+  
   svg += `
     <defs>
       <linearGradient id="radarGradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -226,41 +226,41 @@ export function drawRadarChart(data, elementId, color = "#4facfe") {
     </defs>
   `
 
-  // Draw concentric circles with better styling
+  
   for (let i = 1; i <= levels; i++) {
     const r = (radius / levels) * i
     const opacity = 0.15 + (i * 0.05)
     svg += `<circle cx="${centerX}" cy="${centerY}" r="${r}" fill="none" stroke="#667eea" stroke-width="2" opacity="${opacity}"/>`
     
-    // Add level labels
+    
     if (i < levels) {
       const value = Math.round((maxValue / levels) * i)
       svg += `<text x="${centerX}" y="${centerY - r + 5}" text-anchor="middle" fill="#a0a0b0" font-size="8" opacity="0.6">${value}</text>`
     }
   }
 
-  // Draw axes and labels
+  
   skills.forEach((skill, i) => {
     const angle = angleStep * i - Math.PI / 2
     const x = centerX + radius * Math.cos(angle)
     const y = centerY + radius * Math.sin(angle)
     
-    // Axis line with gradient
+    
     svg += `<line x1="${centerX}" y1="${centerY}" x2="${x}" y2="${y}" stroke="#667eea" stroke-width="2" opacity="0.4"/>`
     
-    // Label with better positioning and styling
+    
     const labelDistance = radius + 30
     const labelX = centerX + labelDistance * Math.cos(angle)
     const labelY = centerY + labelDistance * Math.sin(angle)
     
-    // Background for label
+    
     const labelWidth = skill.length * 6 + 14
     
-    // Label text
+    
     svg += `<text x="${labelX}" y="${labelY + 4}" text-anchor="middle" fill="#00f2fe" font-size="11" font-weight="700">${skill}</text>`
   })
 
-  // Draw data polygon with gradient and glow
+  
   let points = ""
   let valuePoints = []
   skills.forEach((skill, i) => {
@@ -273,14 +273,14 @@ export function drawRadarChart(data, elementId, color = "#4facfe") {
     valuePoints.push({ x, y, value, skill })
   })
 
-  // Draw filled polygon with gradient
+  
   svg += `<polygon points="${points}" fill="url(#radarGradient)" opacity="0.7" stroke="#00f2fe" stroke-width="2" filter="url(#glow)"/>`
 
-  // Draw data points
+  
   valuePoints.forEach(point => {
     svg += `<circle cx="${point.x}" cy="${point.y}" r="4" fill="#00f2fe" stroke="white" stroke-width="1.5" filter="drop-shadow(0 0 6px rgba(0, 242, 254, 0.8))"/>`
     
-    // Add value labels on points
+    
     svg += `<text x="${point.x}" y="${point.y - 9}" text-anchor="middle" fill="#43e97b" font-size="9" font-weight="700">${point.value}%</text>`
   })
 
@@ -386,7 +386,7 @@ export function drawBestSkillsDetails(skillsArray) {
     const percentage = ((value / totalValue) * 100).toFixed(1)
     const displayValue = (value / 1000).toFixed(1)
     
-    // Calculate completion level
+    
     let level = "Beginner"
     let levelColor = "#f59e0b"
     if (percentage > 25) {

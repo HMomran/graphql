@@ -1,4 +1,4 @@
-// XP Module
+
 import { fetchXPData } from '../api.js'
 import { drawXPGraph } from '../charts.js'
 

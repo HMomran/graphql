@@ -1,4 +1,4 @@
-// Activity Module
+
 import { fetchXPData, fetchRecentActivity, fetchAllProjects } from '../api.js'
 
 export async function loadLastActivity(selectedEventId) {
@@ -11,11 +11,11 @@ export async function loadLastActivity(selectedEventId) {
     return
   }
 
-  // Fetch total XP for the badge
+  
   const totalData = await fetchXPData(selectedEventId)
   const totalXP = totalData.transaction.reduce((sum, t) => sum + t.amount, 0)
 
-  // Fetch last 4 projects for display
+  
   const recentData = await fetchRecentActivity(selectedEventId, 4)
 
   let html = `<div class="xp-badge"><span class="xp-icon">XP</span> ${(totalXP / 1000).toFixed(0)} kB</div>`

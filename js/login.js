@@ -1,3 +1,7 @@
+if (localStorage.getItem("token")) {
+  window.location.href = "profile.html"
+}
+
 const form = document.getElementById("loginForm")
 
 form.addEventListener("submit", async (e) => {

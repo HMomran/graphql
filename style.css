@@ -1,33 +1,33 @@
-/* 🎨 GraphQL Developer Dashboard - Premium Design System */
+
 
 :root {
-  /* 🌈 Color Palette - Dark & Muted */
+  
   --gradient-primary: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
   --gradient-secondary: linear-gradient(135deg, #21262d 0%, #30363d 100%);
   --gradient-accent: linear-gradient(135deg, #1f6feb 0%, #388bfd 100%);
   --gradient-success: linear-gradient(135deg, #238636 0%, #2ea043 100%);
   --gradient-warm: linear-gradient(135deg, #b08800 0%, #d4a017 100%);
 
-  /* 🎭 Backgrounds */
+  
   --bg-primary: #0d1117;
   --bg-secondary: #161b22;
   --bg-card: rgba(22, 27, 34, 0.85);
   --bg-card-hover: rgba(33, 38, 45, 0.95);
 
-  /* 📝 Text Colors */
+  
   --text-primary: #c9d1d9;
   --text-secondary: #8b949e;
   --text-accent: #58a6ff;
   --text-muted: #484f58;
 
-  /* 🎨 Accent Colors */
+  
   --accent-purple: #388bfd;
   --accent-pink: #f78166;
   --accent-blue: #388bfd;
   --accent-green: #3fb950;
   --accent-orange: #d29922;
 
-  /* ✨ Effects */
+  
   --glow: 0 0 16px rgba(56, 139, 253, 0.2);
   --glow-strong: 0 0 24px rgba(56, 139, 253, 0.35);
   --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
@@ -35,13 +35,13 @@
   --shadow-lg: 0 20px 40px -10px rgba(0, 0, 0, 0.7);
   --border-glow: rgba(56, 139, 253, 0.2);
 
-  /* 📐 Spacing & Borders */
+  
   --radius-sm: 12px;
   --radius-md: 16px;
   --radius-lg: 24px;
   --radius-xl: 32px;
 
-  /* ⚡ Animations */
+  
   --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-slow: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -76,7 +76,6 @@ body {
   margin: 0 auto;
 }
 
-/* 🌟 Animated Background Particles */
 body::before {
   content: '';
   position: fixed;
@@ -101,13 +100,11 @@ body::before {
   100% { transform: translateY(-100px) translateX(50px); }
 }
 
-/* All content above particles */
 header, .module-selector, .profile, .stats, .modal {
   position: relative;
   z-index: 1;
 }
 
-/* 🎯 Header - Premium Style */
 header {
   display: flex;
   justify-content: space-between;
@@ -205,7 +202,6 @@ header h1::after {
   left: 0;
 }
 
-/* 📚 Module Selector - Interactive Cards */
 .module-selector {
   background: var(--bg-card);
   backdrop-filter: blur(20px);
@@ -335,7 +331,6 @@ header h1::after {
   border: none;
 }
 
-/* 👤 Profile Section - Glassmorphism Cards */
 .profile {
   display: grid;
   grid-template-columns: 1fr;
@@ -344,7 +339,6 @@ header h1::after {
   animation: fadeInUp 0.6s ease-out 0.2s both;
 }
 
-/* 🎴 Card Base - Premium Design */
 .card {
   background: var(--bg-card);
   backdrop-filter: blur(20px);
@@ -394,7 +388,6 @@ header h1::after {
   gap: 10px;
 }
 
-/* 👤 Profile Card (header button) */
 .view-profile-btn {
   background: var(--bg-card);
   border: 1px solid rgba(56, 139, 253, 0.5);
@@ -432,7 +425,6 @@ header h1::after {
   left: 0;
 }
 
-/* 🎯 Activity Section - Enhanced Cards */
 #lastActivity {
   display: flex;
   flex-direction: column;
@@ -549,7 +541,6 @@ header h1::after {
   left: 0;
 }
 
-/* 📊 Stats Grid - Dashboard Layout */
 .stats {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -573,7 +564,6 @@ header h1::after {
   min-height: 520px;
 }
 
-/* 🏆 Best Skills Card */
 .best-skills-card .card-header {
   margin-bottom: 24px;
 }
@@ -595,7 +585,6 @@ header h1::after {
   background: linear-gradient(135deg, rgba(56, 139, 253, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
 }
 
-/* Skills Legend */
 .skills-legend {
   display: flex;
   flex-wrap: wrap;
@@ -645,7 +634,6 @@ header h1::after {
   filter: drop-shadow(0 4px 20px rgba(56, 139, 253, 0.3));
 }
 
-/* 📈 Graph Containers - Modern Design */
 #auditRatioGraph, #xpGraph {
   background: rgba(56, 139, 253, 0.05);
   border-radius: var(--radius-md);
@@ -657,7 +645,6 @@ header h1::after {
   box-shadow: inset 0 0 30px rgba(56, 139, 253, 0.1);
 }
 
-/* Enhanced XP Graph Styling */
 #xpGraph {
   min-height: 350px;
   background: linear-gradient(135deg, rgba(56, 139, 253, 0.08) 0%, rgba(46, 160, 67, 0.08) 100%);
@@ -670,7 +657,6 @@ header h1::after {
   filter: drop-shadow(0 4px 20px rgba(56, 139, 253, 0.3));
 }
 
-/* XP Stats Display */
 .xp-timeline-header {
   text-align: center;
   margin-bottom: 24px;
@@ -781,7 +767,6 @@ header h1::after {
   100% { transform: rotate(360deg); }
 }
 
-/* Audit Visualization Styles */
 .audit-viz {
   display: flex;
   flex-direction: column;
@@ -873,7 +858,6 @@ header h1::after {
   letter-spacing: 2px;
 }
 
-/* 🎭 Modal - Premium Overlay */
 .modal {
   display: none;
   position: fixed;
@@ -962,7 +946,6 @@ header h1::after {
   box-shadow: 0 0 20px rgba(30, 40, 55, 0.5);
 }
 
-/* Profile Modal */
 .profile-modal-content {
   max-width: 420px;
 }
@@ -1073,7 +1056,6 @@ header h1::after {
   box-shadow: 0 4px 12px rgba(46, 160, 67, 0.3);
 }
 
-/* 🎨 Custom Scrollbar */
 .modal-body::-webkit-scrollbar {
   width: 10px;
 }
@@ -1092,7 +1074,6 @@ header h1::after {
   background: var(--gradient-secondary);
 }
 
-/* 📱 Responsive Design */
 @media (max-width: 900px) {
   body { padding: 24px 20px; }
   
@@ -1111,7 +1092,7 @@ header h1::after {
     grid-template-columns: 1fr;
   }
   
-  /* Responsive graphs */
+  
   .xp-stats {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -1149,7 +1130,7 @@ header h1::after {
     padding: 20px;
   }
   
-  /* Responsive graphs */
+  
   .xp-stats {
     grid-template-columns: 1fr;
   }
@@ -1166,7 +1147,6 @@ header h1::after {
   }
 }
 
-/* ⚡ Performance Optimizations */
 * {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1176,7 +1156,6 @@ header h1::after {
   will-change: transform;
 }
 
-/* 🎭 Loading States */
 .loading-shimmer {
   position: relative;
   overflow: hidden;
@@ -1192,10 +1171,6 @@ header h1::after {
   background: linear-gradient(90deg, transparent, rgba(56, 139, 253, 0.2), transparent);
   animation: shimmer 1.5s infinite;
 }
-
-/* ============================================================
-   LOGIN PAGE STYLES (scoped to body.login-page)
-   ============================================================ */
 
 body.login-page {
   display: flex;

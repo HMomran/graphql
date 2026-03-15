@@ -1,4 +1,4 @@
-// Skills Module
+
 import { fetchSkillsData } from '../api.js'
 import { drawRadarChart } from '../charts.js'
 
@@ -7,8 +7,8 @@ export async function loadBestSkills() {
 
   const skillsData = {}
   
-  // Skill transactions store the current skill level (0–100), not a delta.
-  // Keep only the highest recorded amount per skill.
+  
+  
   data.transaction.forEach(t => {
     const skillName = t.type.replace("skill_", "")
     if (!skillsData[skillName] || t.amount > skillsData[skillName]) {
@@ -16,7 +16,7 @@ export async function loadBestSkills() {
     }
   })
 
-  // Get top 6 skills
+  
   const topSkills = Object.entries(skillsData)
     .sort((a, b) => b[1] - a[1])
     .slice(0, 6)
